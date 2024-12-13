@@ -1,28 +1,49 @@
 package managers;
 
+import db.MissionDatabase;
 import entities.Mission;
+
 import java.util.Scanner;
 
 public class MissionManager {
-    private Database database;
+    private MissionDatabase missionDatabase;
 
-    public MissionManager(Database database) {
-        this.database = database;
+    public MissionManager(MissionDatabase missionDatabase) {
+        this.missionDatabase = missionDatabase;
     }
 
-    public void viewAllMission() {
-        database.getAllMissions().forEach(mission -> System.out.println(mission));
+    public void showMissionNames() {
+        var missions = missionDatabase.getAllMissions();
+
+        if (missions.isEmpty()) {
+            System.out.println("No missions available.");
+            return;
+        }
+
+        System.out.println("\n--- Available Missions ---");
+        int index = 1;
+        for (Mission mission : missions) {
+            System.out.println(index + ". " + mission.getMissionName());
+            index++;
+        }
     }
 
     public Mission findMissionByName(String name) {
-        return database.getMissionByName(name);
+        return missionDatabase.getMissionByName(name);
+    }
+
+    public void viewAllMission() {
+        for (Mission mission : missionDatabase.getAllMissions()) {
+            System.out.println(mission);
+            System.out.println("Operation Type: " + mission.getOperationType());
+        }
     }
 
     public void updateMissionStatus(String name, String newStatus) {
         Mission mission = findMissionByName(name);
         if (mission != null) {
             mission.setStatus(Mission.MissionStatus.valueOf(newStatus.toUpperCase()));
-            database.updateMission(mission);
+            missionDatabase.updateMission(mission);
             System.out.println("Mission status updated for " + name + " to: " + newStatus);
         }
     }
@@ -30,7 +51,7 @@ public class MissionManager {
     public void deleteMission(String name) {
         Mission mission = findMissionByName(name);
         if (mission != null) {
-            database.deleteMission(mission.getMissionId());
+            missionDatabase.deleteMission(mission.getMissionId());
             System.out.println("Mission deleted: " + name);
         }
     }
@@ -45,6 +66,10 @@ public class MissionManager {
         String typeInput = scanner.nextLine();
         Mission.MissionType type = Mission.MissionType.valueOf(typeInput.toUpperCase());
 
+        System.out.println("Enter operation type (RELIEF or RESCUE): ");
+        String operationInput = scanner.nextLine();
+        Mission.OperationType operationType = Mission.OperationType.valueOf(operationInput.toUpperCase());
+
         System.out.println("Enter location: ");
         String location = scanner.nextLine();
 
@@ -55,9 +80,11 @@ public class MissionManager {
         System.out.println("Enter description: ");
         String description = scanner.nextLine();
 
-        Mission newMission = new Mission(name, type, location, status, description);
-
-        database.insertMission(newMission);
+        Mission newMission = new Mission(name, type, operationType, location, status, description);
+        missionDatabase.insertMission(newMission);
         System.out.println("New mission successfully added!");
     }
+
+    
+
 }

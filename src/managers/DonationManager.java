@@ -1,30 +1,32 @@
 package managers;
 
 import entities.Donation;
-import java.util.ArrayList;
+import db.DonationDatabase;
 import java.util.List;
 
 public class DonationManager {
-    private List<Donation> donations;
+    private DonationDatabase donationDatabase;
     private double totalMonetaryDonations;
     private String donationGoal; // E.g., "Help us collect 1000 food packs for flood victims"
     private double goalProgress;
 
     public DonationManager() {
-        donations = new ArrayList<>();
+        donationDatabase = new DonationDatabase();
         totalMonetaryDonations = 0;
         goalProgress = 0;
     }
 
     // Add a monetary donation
-    public void addMonetaryDonation(Donation donation) {
-        donations.add(donation);
-        totalMonetaryDonations += donation.getMonetaryAmount();
+    public void addMonetaryDonation(String donorName, double amount) {
+        Donation donation = new Donation(donorName, amount); // Create the donation object
+        donationDatabase.addDonation(donation); // Add to database
+        totalMonetaryDonations += amount;
     }
 
     // Add an in-kind donation
-    public void addInKindDonation(Donation donation) {
-        donations.add(donation);
+    public void addInKindDonation(String donorName, Donation.DonationCategory category, double quantity, String description) {
+        Donation donation = new Donation(donorName, category, quantity, description); // Create the donation object
+        donationDatabase.addDonation(donation); // Add to database
     }
 
     // Set a donation goal (for goods or funds)
@@ -43,9 +45,14 @@ public class DonationManager {
         return totalMonetaryDonations;
     }
 
-    // Get donation details
-    public List<Donation> getDonations() {
-        return donations;
+    // Get donation details by donor
+    public List<Donation> getDonationsByDonor(String donorName) {
+        return donationDatabase.getDonationsByDonor(donorName);
+    }
+
+    // Get all donation details
+    public List<Donation> getAllDonations() {
+        return donationDatabase.getAllDonations();
     }
 
     // Get donation goal and progress
@@ -55,7 +62,7 @@ public class DonationManager {
 
     // Display a summary of all donations
     public void displayAllDonations() {
-        for (Donation donation : donations) {
+        for (Donation donation : donationDatabase.getAllDonations()) {
             System.out.println(donation);
         }
     }

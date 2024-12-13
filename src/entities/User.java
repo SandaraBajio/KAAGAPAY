@@ -1,46 +1,50 @@
 package entities;
 
 public class User {
-    private String name;
-    private String email;
-    private String status;  // New field to store the status of the user (e.g., Available, Unavailable)
+    private String username;
+    private String password;  // Password for authentication
+    private boolean isAdmin;  // To differentiate admins from regular users
 
     // Constructor
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
-        this.status = "Available";  // Default status
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.isAdmin = false;      // Default to non-admin user
     }
 
-    // Getter and Setter for name and email
-    public String getName() {
-        return name;
+    // Getter and Setter methods
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    // Getter and Setter for status
-    public String getStatus() {
-        return status;
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
-    // Overriding toString to include name and email
+    // Method to log in the user
+    public boolean login(String username, String password) {
+        return this.username.equals(username) && this.password.equals(password);
+    }
+
+    // Overriding toString to include all details
     @Override
     public String toString() {
-        return name + " - " + email;
+        return username;
     }
 }

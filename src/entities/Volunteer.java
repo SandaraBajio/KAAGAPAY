@@ -1,66 +1,35 @@
 package entities;
 
 public class Volunteer extends User {
-    private String skills;
-    private boolean isAvailable;
-    private String volunteerType;  // Nimbus Basic, Nimbus Plus, etc.
-    private RescueOperation assignedOperation;  // Reference to assigned rescue operation (if any)
+    private boolean isApprovedForMission;
+    private String experience;
 
     // Constructor
-    public Volunteer(String name, String email, String skills, boolean isAvailable, String volunteerType) {
-        super(name, email);
-        this.skills = skills;
-        this.isAvailable = isAvailable;
-        this.volunteerType = volunteerType;
-        this.assignedOperation = null;  // Initially not assigned to any operation
+    public Volunteer(String username, String password, String experience) {
+        super(username, password); // Calls User constructor
+        this.experience = experience;
+        this.isApprovedForMission = false;
     }
 
-    // Getter and Setter methods for skills, isAvailable, volunteerType, and assignedOperation
-    public String getSkills() {
-        return skills;
+    // Getter and Setter methods
+    public boolean isApprovedForMission() {
+        return isApprovedForMission;
     }
 
-    public void setSkills(String skills) {
-        this.skills = skills;
+    public void setApprovedForMission(boolean approvedForMission) {
+        isApprovedForMission = approvedForMission;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public String getExperience() {
+        return experience;
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
-
-    public String getVolunteerType() {
-        return volunteerType;
-    }
-
-    public void setVolunteerType(String volunteerType) {
-        this.volunteerType = volunteerType;
-    }
-
-    public RescueOperation getAssignedOperation() {
-        return assignedOperation;
-    }
-
-    public void setAssignedOperation(RescueOperation assignedOperation) {
-        this.assignedOperation = assignedOperation;
-    }
-
-    // Method to assign a volunteer to a rescue operation
-    public void assignToRescueOperation(RescueOperation operation) {
-        if (this.isAvailable) {
-            this.assignedOperation = operation;
-            this.isAvailable = false;  // Mark as unavailable once assigned
-            System.out.println(this.getName() + " has been assigned to " + operation.getOperationName());
-        } else {
-            System.out.println(this.getName() + " is not available for this operation.");
-        }
+    public void setExperience(String experience) {
+        this.experience = experience;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " - Skills: " + skills + " - Available: " + isAvailable + " - Volunteer Type: " + volunteerType;
+        return "Volunteer: " + getUsername() + ", Experience: " + experience;
     }
 }
