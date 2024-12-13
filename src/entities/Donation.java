@@ -3,21 +3,29 @@ package entities;
 public class Donation {
     private String donorName;
     private double monetaryAmount; // For monetary donations
-    private String itemCategory;   // For in-kind donations (e.g., Food, Clothing)
+    private DonationCategory itemCategory; // Using the enum for in-kind donations
     private double itemQuantity;   // Quantity of items donated
     private String description;    // Additional description or details about the donation
+
+
+public enum DonationCategory {
+    FOOD, 
+    CLOTHING, 
+    MEDICAL_SUPPLIES, 
+    HYGIENE_PRODUCTS;
+}
 
     // Constructor for monetary donations
     public Donation(String donorName, double monetaryAmount) {
         this.donorName = donorName;
         this.monetaryAmount = monetaryAmount;
-        this.itemCategory = "Monetary"; // Default for monetary donations
+        this.itemCategory = null; // No in-kind category for monetary donations
         this.itemQuantity = 0;
         this.description = "Monetary Donation";
     }
 
     // Constructor for in-kind donations
-    public Donation(String donorName, String itemCategory, double itemQuantity, String description) {
+    public Donation(String donorName, DonationCategory itemCategory, double itemQuantity, String description) {
         this.donorName = donorName;
         this.monetaryAmount = 0; // No monetary value for in-kind donations
         this.itemCategory = itemCategory;
@@ -34,7 +42,7 @@ public class Donation {
         return monetaryAmount;
     }
 
-    public String getItemCategory() {
+    public DonationCategory getItemCategory() {
         return itemCategory;
     }
 
@@ -45,7 +53,7 @@ public class Donation {
     public String getDescription() {
         return description;
     }
-    
+
     @Override
     public String toString() {
         if (monetaryAmount > 0) {
