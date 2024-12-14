@@ -2,16 +2,14 @@ package entities;
 
 public class Volunteer extends User {
     private boolean isApprovedForMission;
-    private String experience;
+    private String missionName;
 
-    // Constructor
-    public Volunteer(String username, String password, String experience) {
-        super(username, password); // Calls User constructor
-        this.experience = experience;
+    public Volunteer(String username, String missionName) {
+        super(username, "");
         this.isApprovedForMission = false;
+        this.missionName = missionName;
     }
 
-    // Getter and Setter methods
     public boolean isApprovedForMission() {
         return isApprovedForMission;
     }
@@ -20,16 +18,16 @@ public class Volunteer extends User {
         isApprovedForMission = approvedForMission;
     }
 
-    public String getExperience() {
-        return experience;
+    public String getMissionName() {
+        return missionName;
     }
 
-    public void setExperience(String experience) {
-        this.experience = experience;
+    public void setMissionName(String missionName) {
+        this.missionName = missionName;
     }
 
     @Override
     public String toString() {
-        return "Volunteer: " + getUsername() + ", Experience: " + experience;
+        return "Volunteer: " + getUsername() + ", Mission: " + missionName;
     }
 }

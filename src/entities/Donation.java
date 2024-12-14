@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Donation {
     private String donorName;
-    private double monetaryAmount; // For monetary donations
-    private DonationCategory itemCategory; // Using the enum for in-kind donations
-    private double itemQuantity;   // Quantity of items donated
-    private String description;    // Additional description or details about the donation
-    private Date donationDate;     // New field to store the donation date
+    private double monetaryAmount;
+    private DonationCategory itemCategory;
+    private double itemQuantity;
+    private String description;
+    private Date donationDate;
 
     public enum DonationCategory {
         FOOD, 
@@ -17,27 +17,24 @@ public class Donation {
         HYGIENE_PRODUCTS;
     }
 
-    // Constructor for monetary donations
     public Donation(String donorName, double monetaryAmount) {
         this.donorName = donorName;
         this.monetaryAmount = monetaryAmount;
-        this.itemCategory = null; // No in-kind category for monetary donations
+        this.itemCategory = null;
         this.itemQuantity = 0;
         this.description = "Monetary Donation";
-        this.donationDate = new Date(); // Set the current date
+        this.donationDate = new Date();
     }
 
-    // Constructor for in-kind donations
     public Donation(String donorName, DonationCategory itemCategory, double itemQuantity, String description) {
         this.donorName = donorName;
-        this.monetaryAmount = 0; // No monetary value for in-kind donations
+        this.monetaryAmount = 0;
         this.itemCategory = itemCategory;
         this.itemQuantity = itemQuantity;
         this.description = description;
-        this.donationDate = new Date(); // Set the current date
+        this.donationDate = new Date();
     }
 
-    // Getters and Setters for each field
     public String getDonorName() {
         return donorName;
     }

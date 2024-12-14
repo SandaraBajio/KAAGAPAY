@@ -16,6 +16,7 @@ public class Menu {
     private DonationManager donationManager;
     private DonationDatabase donationDatabase;
     private Scanner scanner;
+    private ConsoleDesign consoleDesign;
 
     public Menu(MissionDatabase missionDatabase, MissionManager missionManager, UserDatabase userDatabase, DonationManager donationManager, DonationDatabase donationDatabase) {
         this.missionDatabase = missionDatabase;
@@ -25,13 +26,19 @@ public class Menu {
         this.donationManager = donationManager;
         this.donationDatabase = donationDatabase;
         this.scanner = new Scanner(System.in);
+        this.consoleDesign = new ConsoleDesignImpl();
     }
 
     public void displayMainMenu() {
-        System.out.println("Welcome to the Disaster Response Management System!");
+        consoleDesign.clearScreen();
+        consoleDesign.printLogo();
         boolean exit = false;
 
+        consoleDesign.setColor("yellow");
+            System.out.println("             Together, We Rebuild Stronger.");
+
         while (!exit) {
+            consoleDesign.setColor("magenta");
             System.out.println("\nMain Menu:");
             System.out.println("1. Sign Up");
             System.out.println("2. Log In as User");
@@ -41,8 +48,7 @@ public class Menu {
 
             try {
                 int choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
-
+                scanner.nextLine();
                 switch (choice) {
                     case 1:
                         handleSignUp();
@@ -55,19 +61,22 @@ public class Menu {
                         break;
                     case 4:
                         exit = true;
-                        System.out.println("Thank you for using the system. Goodbye!");
+                        consoleDesign.blinkText("Thank you for using the system. Goodbye!", 3);
                         break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number between 1 and 4.");
-                scanner.nextLine(); // Clear the buffer
+                scanner.nextLine(); 
             }
         }
     }
 
     private void handleSignUp() {
+        consoleDesign.clearScreen();
+        consoleDesign.printLogo();
+        consoleDesign.setColor("magenta");
         System.out.println("\n--- Sign Up ---");
         System.out.print("Enter a username: ");
         String username = scanner.nextLine();
@@ -82,6 +91,7 @@ public class Menu {
     }
 
     private void handleUserLogin() {
+        consoleDesign.setColor("magenta");
         System.out.println("\n--- Log In as User ---");
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
@@ -91,7 +101,7 @@ public class Menu {
         try {
             if (userManager.handleUserLogin(username, password)) {
                 System.out.println("User login successful! Welcome, " + username + ".");
-                handleUserMenu(username); // Pass the username for user-specific operations
+                handleUserMenu(username); 
             } else {
                 System.out.println("Invalid username or password. Please try again.");
             }
@@ -101,6 +111,7 @@ public class Menu {
     }
 
     private void handleAdminLogin() {
+        consoleDesign.setColor("magenta");
         System.out.println("\n--- Log In as Admin ---");
         System.out.print("Enter admin password: ");
         String password = scanner.nextLine();
@@ -121,6 +132,7 @@ public class Menu {
         boolean backToMain = false;
 
         while (!backToMain) {
+            consoleDesign.setColor("magenta");
             System.out.println("\n--- Admin Menu ---");
             System.out.println("1. Manage Missions");
             System.out.println("2. Manage Volunteers");
@@ -131,7 +143,7 @@ public class Menu {
 
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine();
 
                 switch (choice) {
                     case 1:
@@ -144,19 +156,22 @@ public class Menu {
                         manageDonations();
                         break;
                     case 4:
-                        backToMain = true; // Exit the loop to return to the main menu
+                        backToMain = true;
                         break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number between 1 and 4.");
-                scanner.nextLine(); // Clear the buffer
+                scanner.nextLine(); 
             }
         }
     }
 
     private void manageMissions() {
+        consoleDesign.clearScreen();
+        consoleDesign.printLogo();
+        consoleDesign.setColor("magenta");
         System.out.println("\n--- Manage Missions ---");
         System.out.println("1. Add Mission");
         System.out.println("2. Delete Mission");
@@ -168,23 +183,23 @@ public class Menu {
 
         try {
             missionChoice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (missionChoice) {
                 case 1:
-                    missionManager.addMission(); // Calls your addMission() method
+                    missionManager.addMission();
                     break;
                 case 2:
                     System.out.print("Enter the name of the mission to delete: ");
                     String missionToDelete = scanner.nextLine();
-                    missionManager.deleteMission(missionToDelete); // Calls deleteMission() from MissionManager
+                    missionManager.deleteMission(missionToDelete);
                     break;
                 case 3:
                     System.out.print("Enter the name of the mission to update status: ");
                     String missionToUpdate = scanner.nextLine();
                     System.out.print("Update status to (ongoing/completed): ");
                     String updateStatus = scanner.nextLine();
-                    missionManager.updateMissionStatus(missionToUpdate, updateStatus); // Calls your updateMissionStatus() method
+                    missionManager.updateMissionStatus(missionToUpdate, updateStatus);
                     break;
                 case 4:
                     missionManager.viewAllMission();
@@ -196,11 +211,14 @@ public class Menu {
             }
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a valid option.");
-            scanner.nextLine(); // Clear the buffer
+            scanner.nextLine();
         }
     }
 
     private void manageVolunteers() {
+        consoleDesign.setColor("magenta");
+        consoleDesign.clearScreen();
+        consoleDesign.printLogo();
         System.out.println("\n--- Manage Volunteers ---");
         System.out.println("1. Approve Volunteer Mission");
         System.out.println("2. Show Volunteer Profile");
@@ -210,11 +228,10 @@ public class Menu {
 
         try {
             choice = scanner.nextInt();
-            scanner.nextLine(); // To consume the newline character after integer input
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    // Approve Volunteer Mission
                     System.out.print("Enter Volunteer Username to approve for mission: ");
                     String username = scanner.nextLine();
                     Volunteer volunteer = userDatabase.getVolunteerByUsername(username);
@@ -226,7 +243,6 @@ public class Menu {
                     break;
 
                 case 2:
-                    // Show Volunteer Profile
                     System.out.print("Enter Volunteer Username to view profile: ");
                     username = scanner.nextLine();
                     volunteer = userDatabase.getVolunteerByUsername(username);
@@ -238,24 +254,23 @@ public class Menu {
                     break;
 
                 case 3:
-                    // Go back to the previous menu
                     System.out.println("Returning to previous menu...");
                     return;
 
                 default:
                     System.out.println("Invalid choice. Please try again.");
-                    manageVolunteers(); // Recurse to allow retry
+                    manageVolunteers();
             }
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a valid option.");
-            scanner.nextLine(); // Clear the buffer
+            scanner.nextLine();
         }
     }
 
     private void approveVolunteerForMission(Volunteer volunteer) {
         if (!volunteer.isApprovedForMission()) {
             volunteer.setApprovedForMission(true);
-            userDatabase.updateVolunteer(volunteer); // Update volunteer info in the database
+            userDatabase.updateVolunteer(volunteer);
             System.out.println("Volunteer " + volunteer.getUsername() + " has been approved for the mission.");
         } else {
             System.out.println("Volunteer " + volunteer.getUsername() + " is already approved for the mission.");
@@ -263,16 +278,15 @@ public class Menu {
     }
 
     private void showVolunteerProfile(Volunteer volunteer) {
-        // Display the volunteer's full profile
         System.out.println("\n--- Volunteer Profile ---");
         System.out.println("Username: " + volunteer.getUsername());
         System.out.println("Approved for Mission: " + (volunteer.isApprovedForMission() ? "Yes" : "No"));
-        System.out.println("Experience: " + volunteer.getExperience());
     }
 
     private void manageDonations() {
         boolean backToDonationsMenu = false;
         while (!backToDonationsMenu) {
+            consoleDesign.setColor("magenta");
             System.out.println("\n--- Manage Donations ---");
             System.out.println("1. View Total Donations");
             System.out.println("2. Withdraw Donation with Purpose");
@@ -282,7 +296,7 @@ public class Menu {
 
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine();
 
                 switch (choice) {
                     case 1:
@@ -292,14 +306,14 @@ public class Menu {
                         withdrawDonation();
                         break;
                     case 3:
-                        backToDonationsMenu = true; // Exit the loop to return to the main menu
+                        backToDonationsMenu = true;
                         break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid option.");
-                scanner.nextLine(); // Clear the buffer
+                scanner.nextLine();
             }
         }
     }
@@ -307,25 +321,27 @@ public class Menu {
     public void viewTotalDonations() {
         try {
             double totalDonations = donationManager.getTotalMonetaryDonations();
-            System.out.println("Total Monetary Donations: $" + totalDonations);
+            System.out.println("Total Monetary Donations: Php " + totalDonations);
         } catch (Exception e) {
             System.out.println("Error retrieving donation data.");
         }
     }
 
     public void withdrawDonation() {
+        consoleDesign.setColor("magenta");
         System.out.print("Enter the purpose for the withdrawal: ");
         String purpose = scanner.nextLine();
 
-        // Ask for the withdrawal amount
-        System.out.print("Enter the amount to withdraw: $");
+        System.out.print("Enter the amount to withdraw: Php ");
         double amount = scanner.nextDouble();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine();
 
         try {
             boolean success = donationDatabase.withdrawDonation(amount);
             if (success) {
-                System.out.println("Withdrawal of $" + amount + " for the purpose of '" + purpose + "' completed.");
+                System.out.println("Withdrawal of Php " + amount + " for the purpose of '" + purpose + "' completed.");
+                
+                
             } else {
                 System.out.println("Insufficient funds for this withdrawal.");
             }
@@ -338,6 +354,7 @@ public class Menu {
         boolean backToMain = false;
 
         while (!backToMain) {
+            consoleDesign.setColor("magenta");
             System.out.println("\n--- User Menu ---");
             System.out.println("1. Be a Volunteer");
             System.out.println("2. Make a Donation");
@@ -347,7 +364,7 @@ public class Menu {
 
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine();
 
                 switch (choice) {
                     case 1:
@@ -364,7 +381,7 @@ public class Menu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid option.");
-                scanner.nextLine(); // Clear the buffer
+                scanner.nextLine();
             }
         }
     }
@@ -372,55 +389,49 @@ public class Menu {
     private void becomeVolunteer(String username) {
         System.out.println("\n--- Become a Volunteer ---");
     
-        // Check if the user is already a volunteer
         if (userDatabase.getVolunteerByUsername(username) != null) {
             System.out.println("You are already a volunteer.");
             return;
         }
     
-        // Ask the user for their name (no experience input as per the new requirement)
-        System.out.print("Please enter your name: ");
-        String name = scanner.nextLine();
-    
-        // Display available missions (missions entered by admin)
         System.out.println("\nAvailable Missions:");
-        missionManager.viewAllMission(); // Assuming this method displays all the missions
+        missionManager.viewAllMission(); 
     
-        System.out.print("Please choose a mission by entering its name: ");
-        String missionName = scanner.nextLine();
+        System.out.print("Please choose a mission by entering its ID: ");
+        int missionId = Integer.parseInt(scanner.nextLine());
     
-        // Check if the mission exists
-        if (!missionDatabase.isMissionAvailable(missionName)) {
+        Mission mission = missionDatabase.getMissionById(missionId);
+    
+        if (mission == null) {
             System.out.println("Mission not found.");
             return;
         }
     
-        // Create the volunteer object with "pending" status for mission approval
-        Volunteer volunteer = new Volunteer(username, userDatabase.getVolunteerByUsername(username).getPassword(), "");
-        volunteer.setApprovedForMission(false); // Initially not approved
-        volunteer.setExperience(name); // Use name as a placeholder (or you can extend this for a more meaningful attribute)
+        Volunteer volunteer = new Volunteer(username, mission.getMissionName());
+        volunteer.setApprovedForMission(false);
     
         if (userDatabase.addVolunteerInfo(username, volunteer)) {
-            System.out.println("You have successfully registered as a volunteer for the mission: " + missionName);
+            System.out.println("You have successfully registered as a volunteer for the mission: " + mission.getMissionName());
             System.out.println("Your volunteering status is pending until approval by the admin.");
         } else {
             System.out.println("There was an issue registering you as a volunteer.");
         }
     }
-    
+
     private void handleDonation(String username) {
+        consoleDesign.clearScreen();
+        consoleDesign.printLogo();
+        consoleDesign.setColor("magenta");
         System.out.println("\n--- Make a Donation ---");
     
-        // Ask for the donation amount
         System.out.print("Please enter the amount you want to donate: ");
         double donationAmount = 0;
         boolean validAmount = false;
     
-        // Validate the donation amount
         while (!validAmount) {
             try {
                 donationAmount = scanner.nextDouble();
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine();
     
                 if (donationAmount <= 0) {
                     System.out.println("Donation amount must be greater than zero. Please try again.");
@@ -429,21 +440,20 @@ public class Menu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid donation amount.");
-                scanner.nextLine(); // Clear the buffer
+                scanner.nextLine();
             }
         }
     
-        // Process the donation
         Donation donation = new Donation(username, donationAmount);
 
         if (donationDatabase.addDonation(donation)) {
-            System.out.println("Thank you for your donation of $" + donationAmount + "!");
+            System.out.println("Thank you for your donation of Php " + donationAmount + "!");
+            donationManager.addMonetaryDonation(username, donationAmount);
         } else {
             System.out.println("There was an issue processing your donation. Please try again later.");
         }
     }
     
-
     public void closeScanner() {
         if (scanner != null) {
             scanner.close();

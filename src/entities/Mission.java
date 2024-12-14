@@ -98,7 +98,7 @@ public class Mission {
     public void setOccurrenceDate(Date occurrenceDate) {
         this.occurrenceDate = occurrenceDate;
     }
-    
+
     @Override
     public String toString() {
         return "Mission [ID: " + missionId + ", Name: " + missionName + ", Type: " + missionType + ", Location: " + location +
