@@ -119,6 +119,3 @@ Step 4: Set Up the Java Project
 Once inside the VS Code workspace, the Java extension should automatically detect the project.
 If necessary, click on the "Configure Java Runtime" notification that appears and select the appropriate JDK version.
 
-Step 5: Run the Program
-To run the program:
-
